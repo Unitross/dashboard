@@ -152,7 +152,7 @@ header {
 }
 
 nav ul li a {
-    font-family: 'Inter', sans-serif; /* Fuente específica para los enlaces del sidebar */
+    font-family: 'Roboto', sans-serif; /* Fuente específica para los enlaces del sidebar */
     font-size: 18px; /* Tamaño de la fuente en los enlaces del sidebar */
     color: white;
 }

@@ -1,47 +1,41 @@
 const express = require('express');
-const mongoose = require('mongoose');
 const path = require('path');
 const session = require('express-session');
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 const bcrypt = require('bcryptjs');
+const mongoose = require('mongoose');
+const fetch = require('node-fetch');
 const User = require('./models/User'); // Asegúrate de tener este modelo
-const fetch = require('node-fetch'); // Asegúrate de instalar node-fetch si no lo has hecho
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
 // Conexión a MongoDB
-mongoose.connect('mongodb://localhost:27017/Bca2024') // Usa el nombre de tu base de datos aquí
-    .then(() => {
-        console.log('Connected to MongoDB');
-    })
-    .catch(err => {
-        console.error('Error connecting to MongoDB:', err);
-    });
+mongoose.connect('mongodb://localhost:27017/Bca2024', { useNewUrlParser: true, useUnifiedTopology: true })
+    .then(() => console.log('Connected to MongoDB'))
+    .catch(err => console.error('Error connecting to MongoDB:', err));
+
 
 // Middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
 
-
-// Configura la sesión
+// Configuración de la sesión
 app.use(session({
-    secret: 'Soybonita063', // Clave secreta para firmar las cookies de sesión
+    secret: 'Soybonita063',
     resave: false,
     saveUninitialized: false
 }));
 
-// Inicializa Passport y usa sesiones
 app.use(passport.initialize());
 app.use(passport.session());
 
-// Estrategia de autenticación local
 passport.use(new LocalStrategy(
     async (username, password, done) => {
         try {
-            const user = await User.findOne({ username: username });
+            const user = await User.findOne({ username });
             if (!user) return done(null, false, { message: 'Usuario no encontrado.' });
             const isMatch = await bcrypt.compare(password, user.password);
             if (!isMatch) return done(null, false, { message: 'Contraseña incorrecta.' });
@@ -81,9 +75,9 @@ app.use('/users', require('./routes/users'));
 // Ruta principal
 app.get('/', (req, res) => {
     if (req.isAuthenticated()) {
-        res.redirect('/dashboard'); // Redirige al dashboard si el usuario está autenticado
+        res.redirect('/dashboard');
     } else {
-        res.redirect('/login'); // Redirige al login si el usuario no está autenticado
+        res.redirect('/login');
     }
 });
 
@@ -100,13 +94,10 @@ app.get('/login', (req, res) => {
 app.post('/login', async (req, res, next) => {
     const { username, password, recaptchaToken } = req.body;
 
-    // Verifica el token de reCAPTCHA
-    const recaptchaSecret = '6Le3QyUqAAAAANU3gm110CvjRwby4lp1a4Y_yizi'; // Tu clave secreta de reCAPTCHA
+    const recaptchaSecret = '6Le3QyUqAAAAANU3gm110CvjRwby4lp1a4Y_yizi';
     const recaptchaResponse = await fetch(`https://www.google.com/recaptcha/api/siteverify`, {
         method: 'POST',
-        headers: {
-            'Content-Type': 'application/x-www-form-urlencoded'
-        },
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
         body: new URLSearchParams({
             secret: recaptchaSecret,
             response: recaptchaToken
