@@ -1,0 +1,87 @@
+/* Estilos básicos para la página de login */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif; /* Ajusta la fuente según prefieras */
+    background-color: #f0f0f0; /* Color de fondo de la página */
+    background-image: url('/imagen/fondo.jpg'); /* Cambia esta ruta por la ruta de tu imagen de fondo */
+    background-size: cover; /* Ajusta la imagen de fondo para que cubra toda la página */
+    background-attachment: fixed; /* Fija la imagen de fondo al viewport */
+    background-position: center; /* Centra la imagen de fondo */
+    height: 100vh; /* Asegura que el body ocupe toda la altura de la ventana */
+    display: flex; /* Usamos flexbox para centrar el contenido */
+    align-items: center; /* Centra verticalmente */
+    justify-content: center; /* Centra horizontalmente */
+}
+/* Estilos para el contenedor del logo */
+.logologin {
+    text-align: center;
+    margin-bottom: 20px; /* Espacio entre el logo y el formulario */
+}
+
+.logologin img {
+    max-width: 150px; /* Ajusta el tamaño máximo del logo */
+    height: auto;
+    margin-left: 50px;
+}
+
+
+/* Contenedor del formulario de login */
+.login-container {
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    max-width: 300px; /* Tamaño máximo del contenedor */
+    width: 100%; /* Asegura que el contenedor no sea más ancho que el ancho máximo especificado */
+}
+
+/* Estilos para los encabezados */
+h2 {
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+/* Estilos para las etiquetas */
+label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+/* Estilos para los campos de entrada */
+input {
+    width: 85%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding-left: 20px;
+ 
+    
+}
+input[type="text"],
+input[type="password"] {
+    width: 100%;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    text-align: left; /* Center the text inside the input */
+}
+/* Estilos para el botón */
+button {
+    width: 70%; /* Ancho del botón en relación con el contenedor */
+    padding: 10px;
+    background-color: #E65616;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin: 20px auto 0; /* Centra el botón horizontalmente y añade margen superior */
+    display: block; /* Hace que el botón se comporte como un bloque para aplicar el margin auto */
+}
+
+
+button:hover {
+    background-color: #d43f1f;
+}

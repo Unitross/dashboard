@@ -1,0 +1,158 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+
+/* Estilos para el encabezado */
+header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 20px;
+    background-color: #f2f2f2; /* Fondo del header */
+    position: fixed;
+    width: 100%;
+    top: 0;
+    left: 0;
+    z-index: 1000; /* Asegura que esté por encima del sidebar */
+    border-bottom: 3px solid #E65616; /* Borde inferior del header */
+  
+}
+
+/* Estilos para el logo */
+
+.logo img {
+    height: 60px; /* Mantén la altura original */
+    margin-left: 10px;
+    transform: scale(1.5); /* Escala la imagen para hacerla más grande */
+    transform-origin: left; /* Asegura que la imagen se agrande hacia la derecha */
+
+}
+
+
+
+/* Estilos para el menú de usuario */
+.user-menu {
+    display: flex;
+    align-items: center;
+    position: relative;
+}
+
+/* Estilos para la foto de perfil */
+.profile-pic {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+    margin-right: 10px;
+}
+
+/* Estilos para la información del usuario */
+.user-info {
+    display: flex;
+    align-items: center;
+    padding-right: 60px;
+}
+
+/* Estilos para el nombre del usuario */
+.username {
+    margin-left: 10px;
+    font-weight: bold;
+}
+
+/* Estilos para el menú desplegable */
+.dropdown-menu {
+    display: none;
+    position: absolute;
+    right: 0;
+    top: 100%;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    z-index: 1000;
+    min-width: 200px; /* Ancho mínimo del menú desplegable */
+}
+/* Para evitar que el menú se corte en el borde de la pantalla */
+.dropdown-menu {
+    right: 0; /* Ajusta el menú al borde derecho del contenedor padre */
+    left: auto; /* Asegura que el menú no se alinee a la izquierda */
+    transform: translateX(-50%); /* Mueve el menú hacia la izquierda en caso de que se corte */
+    margin-top: 10px;
+}
+
+.dropdown-menu a {
+    display: block;
+    padding: 10px;
+    text-decoration: none;
+    color: #333;
+}
+
+.dropdown-menu a:hover {
+    background-color: #f4f4f4;
+}
+
+/* Estilos para el sidebar */
+nav {
+    width: 200px;
+    height: 100vh; /* Hace que el sidebar ocupe toda la altura de la pantalla */
+    background-color: #E65616; /* Color de fondo oscuro */
+    position: fixed; /* Fija el sidebar al lado izquierdo */
+    top: 60px; /* Ajusta para que empiece justo debajo del header */
+    left: 0;
+    padding-top: 20px;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+}
+
+/* Estilos para eliminar el punto de la lista y ajustar el espaciado */
+nav ul {
+    list-style-type: none; /* Elimina los puntos de la lista */
+    padding: 0;
+    margin: 0;
+    margin-top: 70px;
+}
+
+nav ul li {
+    margin: 25px 0; /* Espaciado vertical entre los botones */
+}
+
+/* Estilos para los enlaces del sidebar */
+nav ul li a {
+    text-decoration: none;
+    color: white;
+    font-size: 18px; /* Aumenta el tamaño del texto */
+    padding: 15px 20px;
+    display: block;
+    transition: background-color 0.3s, color 0.3s;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2); /* Sombra suave */
+    border-radius: 4px; /* Bordes redondeados */
+}
+
+/* Cambios al pasar el cursor por encima de un enlace */
+nav ul li a:hover {
+    background-color: white; /* Fondo blanco al hacer hover */
+    color: #E65616; /* Texto en color #E65616 */
+    box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.3); /* Aumenta la sombra al hacer hover */
+}
+
+/* Estilo para el enlace activo */
+nav ul li a.active {
+    background-color: #ff7843; /* Color más suave que #E65616 */
+    color: white; /* Color del texto blanco */
+    box-shadow: none; /* Sin sombra cuando está activo */
+}
+
+body {
+    font-family: 'Roboto', sans-serif; /* Cambia 'Roboto' por la fuente que desees */
+    font-size: 16px; /* Tamaño base de la fuente */
+    line-height: 1.6; /* Altura de línea */
+    color: #333; /* Color del texto */
+}
+
+header {
+    font-family: 'Open Sans', sans-serif; /* Fuente para el header */
+    font-size: 18px; /* Tamaño de la fuente en el header */
+    color: #232121; /* Color del texto en el header */
+}
+
+nav ul li a {
+    font-family: 'Inter', sans-serif; /* Fuente específica para los enlaces del sidebar */
+    font-size: 18px; /* Tamaño de la fuente en los enlaces del sidebar */
+    color: white;
+}
