@@ -1,18 +1,9 @@
-const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
+const express = require('express');
+const router = express.Router();
 
-const ClientSchema = new Schema({
-    name: {
-        type: String,
-        required: true
-    },
-    email: {
-        type: String,
-        required: true
-    },
-    phone: String,
-    address: String
+// Aquí puedes definir rutas relacionadas con clientes
+router.get('/', (req, res) => {
+    res.send('Clients route');
 });
 
-const Client = mongoose.model('Client', ClientSchema);
-module.exports = Client;
+module.exports = router;

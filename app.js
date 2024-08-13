@@ -10,12 +10,15 @@ const User = require('./models/User'); // Asegúrate de tener este modelo
 
 const app = express();
 const PORT = process.env.PORT || 3000;
+console.log(`Using port: ${PORT}`);
+
 
 // Conexión a MongoDB
-mongoose.connect('mongodb://localhost:27017/Bca2024', { useNewUrlParser: true, useUnifiedTopology: true })
-    .then(() => console.log('Connected to MongoDB'))
-    .catch(err => console.error('Error connecting to MongoDB:', err));
-
+mongoose.connect('mongodb://localhost:27017/Bca2024', { 
+    // Las opciones están eliminadas ya que no son necesarias en versiones recientes
+})
+.then(() => console.log('Connected to MongoDB'))
+.catch(err => console.error('Error connecting to MongoDB:', err));
 
 // Middleware
 app.use(express.json());
