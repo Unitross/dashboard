@@ -9,20 +9,17 @@ document.getElementById('loginForm').addEventListener('submit', function(event) 
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ username, password })
+        body: JSON.stringify({ username: username, password: password })
     })
-    .then(response => {
-        if (!response.ok) {
-            throw new Error('Error en la respuesta del servidor');
-        }
-        return response.json();
-    })
+    .then(response => response.json())
     .then(data => {
         if (data.success) {
             window.location.href = '/dash-bca/dashboard';
         } else {
-            alert(data.message);
+            alert('Error: ' + data.message);
         }
     })
-    .catch(error => console.error('Error:', error));
+    .catch(error => {
+        console.error('Error:', error);
+    });
 });

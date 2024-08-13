@@ -6,6 +6,8 @@
     <title>Dashboard</title>
     <link rel="stylesheet" href="/dash-bca/css/dashboard.css">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
@@ -16,10 +18,10 @@
         <div class="user-menu">
             <img src="/dash-bca/images/user.png" alt="Perfil" class="profile-pic" onclick="toggleProfileMenu()">
             <div class="user-info">
-                <span class="username">Nombre Usuario</span>
+                <span class="username"><%= username %></span>
             </div>
             <div class="dropdown-menu" id="profileMenu">
-                <a href="#">Cambiar Foto</a>
+                <a href="#" onclick="openModal('changePhotoModal')">Cambiar Foto</a>
                 <a href="#">Cambiar Nombre</a>
                 <a href="#">Cambiar Contraseña</a>
                 <a href="#">Configuración</a>
@@ -34,11 +36,31 @@
             <li><a href="#">Pago Mensual</a></li>
             <li><a href="#">Agregar Cliente</a></li>
             <li><a href="#">Ver Clientes</a></li>
+            <li><a href="#">Cuenta de Usuario</a></li>
         </ul>
     </nav>
     <main>
         <canvas id="myChart"></canvas>
     </main>
+
+    <!-- Modal para cambiar la foto de perfil -->
+    <div id="changePhotoModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <span class="close-button" onclick="closeModal('changePhotoModal')">&times;</span>
+            <h2>Cambiar Foto de Perfil</h2>
+            <div class="image-container">
+                <img id="image" src="" style="max-width: 100%;">
+            </div>
+            <input type="file" id="profilePic" name="profilePic" accept="image/*" required onchange="loadImage(event)">
+            <button type="button" onclick="cropImage()">Usar Foto</button>
+            <form id="uploadForm" action="/dash-bca/change-photo" method="POST" enctype="multipart/form-data" style="display: none;">
+                <input type="hidden" id="croppedImage" name="croppedImage">
+            </form>
+        </div>
+    </div>
+    
+
     <script src="/dash-bca/js/dashboard.js"></script>
+    <script src="/dash-bca/js/menu.js"></script>
 </body>
 </html>
