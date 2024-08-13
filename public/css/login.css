@@ -4,7 +4,7 @@ body {
     padding: 0;
     font-family: Arial, sans-serif; /* Ajusta la fuente según prefieras */
     background-color: #f0f0f0; /* Color de fondo de la página */
-    background-image: url('/public/imagen/fondo.jpg'); /* Cambia esta ruta por la ruta de tu imagen de fondo */
+    background-image: url('/dash-bca/images/fondo.jpg'); /* Cambia esta ruta por la ruta de tu imagen de fondo */
     background-size: cover; /* Ajusta la imagen de fondo para que cubra toda la página */
     background-attachment: fixed; /* Fija la imagen de fondo al viewport */
     background-position: center; /* Centra la imagen de fondo */

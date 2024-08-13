@@ -4,17 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
-    <link rel="stylesheet" href="/css/login.css">
+    <link rel="stylesheet" href="/dash-bca/css/login.css">
     <script src="https://www.google.com/recaptcha/api.js?render=6Le3QyUqAAAAANU3gm110CvjRwby4lp1a4Y_yizi"></script>
 </head>
 <body>
     <div class="container">
         <div class="logologin">
-            <img src="/public/images/BCA COLOR.png" alt="Logo de la Empresa"> <!-- Asegúrate de que la ruta al logo sea correcta -->
+            <img src="/dash-bca/images/BCA COLOR.png" alt="Logo de la Empresa"> <!-- Ruta ajustada para el logo -->
         </div>
         <div class="login-container">
             <h2>Iniciar Sesión</h2>
-            <form id="loginForm">
+            <form id="loginForm" action="/dash-bca/login" method="POST"> <!-- Asegúrate de que el formulario POSTee correctamente -->
                 <label for="username">Nombre de Usuario</label>
                 <input type="text" id="username" name="username" required>
                 <label for="password">Contraseña</label>
@@ -23,6 +23,6 @@
             </form>
         </div>
     </div>
-    <script src="/js/login.js"></script>
+    <script src="/dash-bca/js/login.js"></script> <!-- Ruta ajustada para el archivo JS -->
 </body>
 </html>

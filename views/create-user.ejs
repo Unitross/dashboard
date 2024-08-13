@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crear Usuario</title>
+    <link rel="stylesheet" href="/dash-bca/css/styles.css">
+</head>
+<body>
+    <h1>Crear Usuario</h1>
+    <form action="/dash-bca/admin/create-user" method="POST">
+        <label for="username">Nombre de Usuario</label>
+        <input type="text" id="username" name="username" required>
+        <label for="password">Contraseña</label>
+        <input type="password" id="password" name="password" required>
+        <button type="submit">Crear Usuario</button>
+    </form>
+    <a href="/dash-bca/dashboard">Volver al Dashboard</a>
+</body>
+</html>
