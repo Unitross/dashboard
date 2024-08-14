@@ -1,6 +1,7 @@
 const express = require('express');
 const path = require('path');
 const session = require('express-session');
+const FileStore = require('session-file-store')(session);
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 const bcrypt = require('bcrypt');
@@ -9,19 +10,19 @@ const multer = require('multer');
 
 const app = express();
 
-// Configurar el pool de conexiones a la base de datos
+// Configurar el pool de conexiones a la base de datos MySQL
 const db = mysql.createPool({
     connectionLimit: 10,
-    host: '127.0.0.1',  // Cambiar de 'localhost' a '127.0.0.1'
-    user: 'dash_bca1',
-    password: 'oPN0Yejs2q$rsxOu-afi',
+    host: '127.0.0.1',  // Cambiado de 'localhost' a '127.0.0.1'
+    user: 'keroeneu_dash_bca10',
+    password: 'oPN0Yejs2q$rsxOu-afi0',
     database: 'keroeneu_dash_bca'
 });
 
-
-// Configurar la sesión
+// Configurar la sesión utilizando file store
 app.use(session({
-    secret: 'tu_secreto_de_sesion',
+    store: new FileStore({ path: './sessions' }), // Las sesiones se almacenarán en la carpeta 'sessions'
+    secret: 'tu_secreto_de_sesion',  // Cambia esto por un secreto seguro
     resave: false,
     saveUninitialized: false
 }));
@@ -39,16 +40,14 @@ app.set('views', path.join(__dirname, 'views'));
 // Servir archivos estáticos
 app.use('/dash-bca', express.static(path.join(__dirname, 'public')));
 
-// Configurar la estrategia de autenticación local con Passport y bcrypt
+// Configurar la estrategia local de Passport con bcrypt
 passport.use(new LocalStrategy((username, password, done) => {
-    console.log('Intentando autenticar al usuario:', username);
     db.query('SELECT * FROM users WHERE username = ?', [username], (err, results) => {
         if (err) {
             console.error('Error al consultar la base de datos:', err);
             return done(err);
         }
         if (results.length === 0) {
-            console.log('Usuario no encontrado:', username);
             return done(null, false, { message: 'Usuario no encontrado' });
         }
 
@@ -60,10 +59,8 @@ passport.use(new LocalStrategy((username, password, done) => {
                 return done(err);
             }
             if (isMatch) {
-                console.log('Autenticación exitosa para el usuario:', username);
                 return done(null, user);
             } else {
-                console.log('Contraseña incorrecta para el usuario:', username);
                 return done(null, false, { message: 'Contraseña incorrecta' });
             }
         });
@@ -108,7 +105,7 @@ app.get('/dash-bca/login', (req, res) => {
     res.render('login');
 });
 
-// Manejador del login para devolver una respuesta JSON adecuada
+// Manejador del login (POST) para devolver una respuesta JSON adecuada
 app.post('/dash-bca/login', (req, res, next) => {
     passport.authenticate('local', (err, user, info) => {
         if (err) {
@@ -132,7 +129,11 @@ app.post('/dash-bca/login', (req, res, next) => {
 
 // Ruta protegida para el dashboard
 app.get('/dash-bca/dashboard', ensureAuthenticated, (req, res) => {
-    res.render('dashboard', { username: req.user.username });
+    const profilePic = req.user.profilePic || '/dash-bca/images/default-profile.png'; // Ruta por defecto si no hay imagen
+    res.render('dashboard', { 
+        username: req.user.username, 
+        profilePic: profilePic 
+    });
 });
 
 // Ruta para crear usuarios (accesible solo por el admin)
@@ -157,7 +158,7 @@ app.post('/dash-bca/admin/create-user', ensureAdmin, async (req, res) => {
     });
 });
 
-// Ruta para logout
+// Ruta para cerrar sesión (logout)
 app.get('/dash-bca/logout', (req, res) => {
     req.logout(err => {
         if (err) { return next(err); }
@@ -168,12 +169,6 @@ app.get('/dash-bca/logout', (req, res) => {
 // Redirigir la ruta raíz directamente al login
 app.get('/dash-bca', (req, res) => {
     res.redirect('/dash-bca/login');
-});
-
-// Configurar el puerto y arrancar el servidor
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-    console.log(`Servidor corriendo en http://localhost:${PORT}`);
 });
 
 // Configuración de multer para guardar las imágenes subidas
@@ -203,4 +198,10 @@ app.post('/dash-bca/change-photo', ensureAuthenticated, upload.single('croppedIm
         }
         res.json({ success: true, newImageUrl: `/dash-bca/images/${req.file.filename}` });
     });
+});
+
+// Configurar el puerto y arrancar el servidor
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+    console.log(`Servidor corriendo en http://localhost:${PORT}`);
 });

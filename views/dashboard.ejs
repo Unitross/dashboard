@@ -16,10 +16,12 @@
             <img src="/dash-bca/images/BCA COLOR.png" alt="Logo de la Empresa">
         </div>
         <div class="user-menu">
-            <img src="/dash-bca/images/user.png" alt="Perfil" class="profile-pic" onclick="toggleProfileMenu()">
+            <img src="<%= profilePic %>" alt="Perfil" class="profile-pic" onclick="toggleProfileMenu()">
             <div class="user-info">
                 <span class="username"><%= username %></span>
             </div>
+        </div>
+        
             <div class="dropdown-menu" id="profileMenu">
                 <a href="#" onclick="openModal('changePhotoModal')">Cambiar Foto</a>
                 <a href="#">Cambiar Nombre</a>

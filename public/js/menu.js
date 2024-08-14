@@ -1,5 +1,5 @@
 function openModal(modalId) {
-    document.getElementById(modalId).style.display = 'block';
+    document.getElementById(modalId).style.display = 'flex'; // Cambiado a 'flex' para centrar el modal
 }
 
 function closeModal(modalId) {
@@ -22,6 +22,8 @@ function loadImage(event) {
         preview: '.img-preview',
     });
 }
+
+
 //imagen
 
 function cropImage() {
