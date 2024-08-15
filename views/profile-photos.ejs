@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mis Fotos</title>
+    <link rel="stylesheet" href="/dash-bca/css/style.css">
+</head>
+<body>
+    <h1>Mis Fotos</h1>
+    <div class="photo-gallery">
+        <% images.forEach(function(image) { %>
+            <div class="photo">
+                <img src="<%= image %>" alt="User Photo" style="max-width: 100px; height: auto;">
+                <form action="/dash-bca/profile/photos/delete" method="POST">
+                    <input type="hidden" name="imagePath" value="<%= image %>">
+                    <button type="submit">Eliminar</button>
+                </form>
+                <h2>Añadir Foto desde URL</h2>
+<form action="/dash-bca/profile/photos/upload-url" method="POST">
+    <input type="text" name="imageUrl" placeholder="Introduce la URL de la imagen" required>
+    <button type="submit">Añadir</button>
+</form>
+
+            </div>
+        <% }); %>
+    </div>
+</body>
+</html>

@@ -24,10 +24,10 @@
         
             <div class="dropdown-menu" id="profileMenu">
                 <a href="#" onclick="openModal('changePhotoModal')">Cambiar Foto</a>
-                <a href="#">Cambiar Nombre</a>
-                <a href="#">Cambiar Contraseña</a>
-                <a href="#">Configuración</a>
-                <a href="#">Cerrar Sesión</a>
+                <a href="#" onclick="openModal('changeNameModal')">Cambiar Nombre</a>
+                <a href="#" onclick="openModal('changePasswordModal')">Cambiar Contraseña</a>
+                <a href="#" id="registerLink">Registrar Usuario</a>
+                <a href="/dash-bca/logout">Cerrar Sesión</a>
             </div>
         </div>
     </header>
@@ -45,22 +45,51 @@
         <canvas id="myChart"></canvas>
     </main>
 
-    <!-- Modal para cambiar la foto de perfil -->
-    <div id="changePhotoModal" class="modal" style="display: none;">
-        <div class="modal-content">
-            <span class="close-button" onclick="closeModal('changePhotoModal')">&times;</span>
-            <h2>Cambiar Foto de Perfil</h2>
-            <div class="image-container">
-                <img id="image" src="" style="max-width: 100%;">
-            </div>
-            <input type="file" id="profilePic" name="profilePic" accept="image/*" required onchange="loadImage(event)">
-            <button type="button" onclick="cropImage()">Usar Foto</button>
-            <form id="uploadForm" action="/dash-bca/change-photo" method="POST" enctype="multipart/form-data" style="display: none;">
-                <input type="hidden" id="croppedImage" name="croppedImage">
-            </form>
-        </div>
-    </div>
+    <div id="content" style="border: 2px solid red; padding: 20px; width: 70%; margin: 0 auto;">
+        <!-- Aquí se cargará el contenido dinámico -->
+    </div>    
     
+
+<!-- Modal para cambiar la foto de perfil -->
+<div id="changePhotoModal" class="modal" style="display: none;">
+    <div class="modal-content">
+        <span class="close-button" onclick="closeModal('changePhotoModal')">&times;</span>
+        <h2>Cambiar Foto de Perfil</h2>
+        <div class="image-container">
+            <img id="image" src="" style="max-width: 100%;">
+        </div>
+        <input type="file" id="profilePic" name="profilePic" accept="image/*" required onchange="loadImage(event)">
+        <button type="button" onclick="cropImage()">Usar Foto</button>
+    </div>
+</div>
+
+<!-- Modal para Cambiar Nombre -->
+<div id="changeNameModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeModal('changeNameModal')">&times;</span>
+        <h2>Cambiar Nombre</h2>
+        <form id="changeNameForm">
+            <input type="text" id="newUsername" name="newUsername" placeholder="Nuevo nombre de usuario">
+            <button type="submit">Cambiar nombre</button>
+        </form>
+    </div>
+</div>
+
+<!-- Modal para Cambiar contraseña -->
+<div id="changePasswordModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeModal('changePasswordModal')">&times;</span>
+        <h2>Cambiar Contraseña</h2>
+        <form id="changePasswordForm">
+            <input type="password" id="currentPassword" placeholder="Contraseña actual" required>
+            <input type="password" id="newPassword" placeholder="Nueva contraseña" required>
+            <input type="password" id="confirmNewPassword" placeholder="Confirmar nueva contraseña" required>
+            <button type="submit">Cambiar contraseña</button>
+        </form>
+    </div>
+</div>
+
+
 
     <script src="/dash-bca/js/dashboard.js"></script>
     <script src="/dash-bca/js/menu.js"></script>
