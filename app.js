@@ -33,10 +33,15 @@ app.use('/dash-bca', express.static(path.join(__dirname, 'public')));
 const authRoutes = require('./routes/auth');
 const dashboardRoutes = require('./routes/dashboard');
 const imageRoutes = require('./routes/images');
+const contratounicoRouter = require('./routes/contratounico');
+
+
 
 app.use('/dash-bca', authRoutes);
 app.use('/dash-bca', dashboardRoutes);
 app.use('/dash-bca', imageRoutes);
+app.use('/dash-bca', contratounicoRouter);
+
 
 // Redirigir la ruta raíz directamente al login
 app.get('/dash-bca', (req, res) => {

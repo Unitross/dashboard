@@ -1,3 +1,5 @@
+// MODALES DEL MENÚ DEL PERFIL
+
 // Función para abrir un modal y cerrar otros
 
 function openModal(modalId) {
@@ -65,5 +67,64 @@ window.addEventListener('click', function(event) {
 
     if (contentElement && !contentElement.contains(event.target)) {
         contentElement.innerHTML = ''; // Borra el contenido si se hace clic fuera de él
+    }
+});
+
+//------------------------------------------------------
+
+//Modal de REGISTROS DE CLIENTES
+
+// Función para abrir el modal de Nuevo Cliente
+
+function openNuevoClienteModal() {
+    document.getElementById('nuevoClienteModal').style.display = 'block';
+}
+
+// Función para cerrar el modal de Nuevo Cliente
+
+function closeNuevoClienteModal() {
+    document.getElementById('nuevoClienteModal').style.display = 'none';
+}
+
+// Función para manejar el envío del formulario de nuevo cliente
+
+document.getElementById('nuevoClienteForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+
+    const formData = new FormData(this);
+    const datosParaEnviar = Object.fromEntries(formData.entries());
+
+    fetch('/dash-bca/guardar-cliente', {  
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(datosParaEnviar),
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log('Respuesta del servidor:', data);
+        mostrarMensajeExito();
+        closeNuevoClienteModal();  // Cierra el modal si se guarda correctamente
+    })
+    .catch(error => console.error('Error al enviar los datos:', error));
+});
+
+// Función para mostrar el mensaje de éxito
+
+function mostrarMensajeExito() {
+    const mensaje = document.getElementById('mensajeExito');
+    mensaje.style.display = 'block';
+    setTimeout(() => {
+        mensaje.style.display = 'none';
+    }, 3000); // Desaparece después de 3 segundos
+}
+
+// Cerrar el modal cuando se hace clic fuera de él
+
+window.addEventListener('click', function(event) {
+    const modal = document.getElementById('nuevoClienteModal');
+    if (event.target === modal) {
+        closeNuevoClienteModal();
     }
 });
