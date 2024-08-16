@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="/dash-bca/css/dashboard.css">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.css">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
@@ -22,13 +22,14 @@
             </div>
         </div>
         
-            <div class="dropdown-menu" id="profileMenu">
-                <a href="#" onclick="openModal('changePhotoModal')">Cambiar Foto</a>
-                <a href="#" onclick="openModal('changeNameModal')">Cambiar Nombre</a>
-                <a href="#" onclick="openModal('changePasswordModal')">Cambiar Contraseña</a>
-                <a href="#" id="registerLink">Registrar Usuario</a>
-                <a href="/dash-bca/logout">Cerrar Sesión</a>
-            </div>
+        <div class="dropdown-menu" id="profileMenu">
+            <a href="#" class="modal-button" data-target="changePhotoModal">Cambiar Foto</a>
+            <a href="#" class="modal-button" data-target="changeNameModal">Cambiar Nombre</a>
+            <a href="#" class="modal-button" data-target="changePasswordModal">Cambiar Contraseña</a>
+            <a href="#" id="registerLink">Registrar Usuario</a>
+            <a href="/dash-bca/logout">Cerrar Sesión</a>
+        </div>
+        
         </div>
     </header>
     <nav>
@@ -45,7 +46,7 @@
         <canvas id="myChart"></canvas>
     </main>
 
-    <div id="content" style="border: 2px solid red; padding: 20px; width: 70%; margin: 0 auto;">
+    <div id="content">
         <!-- Aquí se cargará el contenido dinámico -->
     </div>    
     
@@ -90,8 +91,11 @@
 </div>
 
 
-
     <script src="/dash-bca/js/dashboard.js"></script>
     <script src="/dash-bca/js/menu.js"></script>
+    <script src="/dash-bca/js/register.js"></script>
+    <script src="/dash-bca/js/modaldashboard.js"></script>
+
+
 </body>
 </html>

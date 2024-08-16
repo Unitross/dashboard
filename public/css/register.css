@@ -1,0 +1,48 @@
+/* Estilo para el contenedor del formulario */
+#content {
+    max-width: 400px; /* Ajusta el ancho máximo del formulario */
+    margin: 50px auto; /* Centra el formulario horizontalmente */
+    border: 2px solid #f2f2f2;
+    padding: 30px; /* Ajusta el padding para dar espacio interno */
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+}
+
+
+/* Estilo para los campos del formulario */
+#registerForm input, #registerForm select {
+    width: 100%; /* Asegura que los campos ocupen todo el ancho disponible */
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ac7157;
+    border-radius: 5px;
+    font-size: 16px;
+    box-sizing: border-box; /* Incluye el padding en el ancho total */
+}
+
+#registerForm button {
+    width: 100%; /* Asegura que el botón ocupe todo el ancho del formulario */
+    padding: 10px;
+    background-color: #E65616;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    box-sizing: border-box;
+    margin-top: 10px;
+}
+
+
+#registerForm button:hover {
+    background-color: #d54c14;
+}
+
+/* Estilo para el encabezado del formulario */
+#content h1 {
+    text-align: center; /* Centra el título */
+    margin-bottom: 20px;
+    font-size: 24px;
+    color: #333;
+}

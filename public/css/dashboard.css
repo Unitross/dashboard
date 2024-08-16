@@ -264,9 +264,4 @@ nav ul li a {
     cursor: pointer;
 }
 
-/*  CSS para centrar y ajustar el contenido */
-#content form {
-    width: 10%; /* Ajusta según lo que necesites */
-    max-width: 90px; /* Máximo ancho */
-    margin: 0 auto; /* Centrado */
-}
+

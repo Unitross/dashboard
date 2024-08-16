@@ -3,56 +3,75 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/dash-bca/css/register.css">
     <title>Registro de Usuario</title>
 </head>
 <body>
-    <h2>Registro de Nuevo Usuario</h2>
+    <h2> Registro de Nuevo Usuario</h2>
     <form id="registerForm">
+        <input type="text" id="fullName" placeholder="Nombre completo" required>
         <input type="text" id="username" placeholder="Nombre de usuario" required>
         <input type="password" id="password" placeholder="Contraseña" required>
+        <select id="role" required>
+            <option value="Diseño Grafico">Diseño Gráfico</option>
+            <option value="Diseño Web">Diseño Web</option>
+            <option value="Especialista SEM">Especialista SEM</option>
+            <option value="Especialista SEO">Especialista SEO</option>
+            <option value="Especialista">Especialista</option>
+        </select>
         <button type="submit">Registrar</button>
     </form>
+    
 
     <script>
-        router.post('/register', (req, res) => {
-    console.log('Registro de usuario solicitado:', req.body);
-    // Resto del código...
-});
 
-        document.getElementById('registerForm').addEventListener('submit', function(e) {
+     // Manejar el formulario de registro
+document.addEventListener('DOMContentLoaded', function() {
+    const registerForm = document.getElementById('registerForm');
+    if (registerForm) {
+        console.log("Formulario de registro encontrado");
+        registerForm.addEventListener('submit', function(e) {
             e.preventDefault();
-            
+            console.log("Enviando formulario de registro");
+
+            const fullName = document.getElementById('fullName').value;
             const username = document.getElementById('username').value;
             const password = document.getElementById('password').value;
-            const confirmPassword = document.getElementById('confirmPassword').value;
-
-            if (password !== confirmPassword) {
-                alert('Las contraseñas no coinciden.');
-                return;
-            }
+            const role = document.getElementById('role').value;
 
             fetch('/dash-bca/register', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ username: username, password: password })
+                body: JSON.stringify({ fullName, username, password, role })
             })
             .then(response => response.json())
             .then(data => {
-                if (data.success) {
-                    alert('Usuario registrado con éxito.');
-                    window.location.href = '/dash-bca/login';
-                } else {
+                if (data.message) {
                     alert(data.message);
+                    
+
+                    // Cierra el formulario cargando un contenido diferente
+                    
+                    document.getElementById('content').innerHTML = '<p style="text-align: center; font-weight: bold; color: green;">Usuario registrado con éxito.</p>';
+                    
+                } else {
+                    alert('Hubo un problema al registrar el usuario. Inténtalo de nuevo.');
                 }
             })
-            .catch(error => console.error('Error en el registro:', error));
+            .catch(error => console.error('Error al registrar el usuario:', error));
         });
+    } else {
+        console.error('El formulario de registro no se encontró en el DOM');
+    }
+});
 
-        
+
     </script>
 
-
 <script src="/dash-bca/js/dashboard.js"></script>
+<script src="/dash-bca/js/register.js"></script>
+
+</script
 
 </body>
 </html>

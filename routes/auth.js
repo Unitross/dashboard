@@ -4,7 +4,8 @@ const db = require('../config/db');
 const bcrypt = require('bcrypt');
 const passport = require('../config/passport');
 const path = require('path');
-const { ensureAuthenticated } = require('/home/keroeneu/2.thebrandingcreators.com/dash-bca/middlewares/authMiddleware');
+const { ensureAuthenticated } = require('../middlewares/authMiddleware');
+
 
 console.log('Cargando middleware desde:', path.join(__dirname, '../middlewares/authMiddleware'));
 
@@ -49,9 +50,14 @@ router.get('/register', (req, res) => {
 
 // Ruta para manejar el registro de un nuevo usuario
 router.post('/register', (req, res) => {
-    const { username, password } = req.body;
+    const { fullName, username, password, role } = req.body;
+    
+    console.log('Datos recibidos:', fullName, username, password, role);
 
-    console.log('Intentando registrar usuario:', username);
+    // Aquí validamos los datos antes de proceder
+    if (!fullName || !username || !password || !role) {
+        return res.status(400).json({ message: 'Faltan datos para registrar el usuario' });
+    }
 
     db.query('SELECT * FROM users WHERE username = ?', [username], (err, results) => {
         if (err) {
@@ -69,17 +75,17 @@ router.post('/register', (req, res) => {
                 return res.status(500).json({ message: 'Error en el servidor.' });
             }
 
-            db.query('INSERT INTO users (username, password) VALUES (?, ?)', [username, hashedPassword], (err, results) => {
+            db.query('INSERT INTO users (username, password, role, fullName) VALUES (?, ?, ?, ?)', 
+            [username, hashedPassword, role, fullName], 
+            (err, results) => {
                 if (err) {
                     console.error('Error al insertar el usuario en la base de datos:', err);
                     return res.status(500).json({ message: 'Error en el servidor.' });
                 }
 
-                console.log('Usuario insertado:', results);
+                console.log('Usuario registrado:', results);
                 res.status(201).json({ message: 'Usuario registrado con éxito.' });
             });
         });
     });
 });
-
-module.exports = router;
