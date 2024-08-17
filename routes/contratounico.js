@@ -62,3 +62,30 @@ router.post('/guardar-cliente', (req, res) => {
 });
 
 module.exports = router;
+
+router.get('/ver-clientes', (req, res) => {
+    db.query('SELECT * FROM clientes', (err, results) => {
+        if (err) {
+            console.error('Error al obtener los clientes:', err);
+            return res.status(500).json({ message: 'Error en el servidor al obtener los clientes.' });
+        }
+        res.json(results);
+    });
+});
+
+
+
+// REGISTRO DE CLIENTES EN LA BD
+// Ruta para pedir a los clientes a la base
+
+router.get('/ver-clientes', (req, res) => {
+    db.query('SELECT * FROM clientes', (err, results) => {
+        if (err) {
+            console.error('Error al recuperar los clientes:', err);
+            return res.status(500).json({ message: 'Error en el servidor' });
+        }
+        res.json(results);
+    });
+});
+
+

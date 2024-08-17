@@ -37,10 +37,12 @@ const contratounicoRouter = require('./routes/contratounico');
 
 
 
+
 app.use('/dash-bca', authRoutes);
 app.use('/dash-bca', dashboardRoutes);
 app.use('/dash-bca', imageRoutes);
 app.use('/dash-bca', contratounicoRouter);
+
 
 
 // Redirigir la ruta raíz directamente al login

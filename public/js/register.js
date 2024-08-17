@@ -64,5 +64,6 @@ function closeContent() {
     const contentElement = document.getElementById('content');
     if (contentElement) {
         contentElement.innerHTML = ''; // Borra el contenido
+      
     }
 }

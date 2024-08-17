@@ -25,7 +25,6 @@ body {
     margin-left: 50px;
 }
 
-
 /* Contenedor del formulario de login */
 .login-container {
     background-color: #fff;
@@ -80,7 +79,6 @@ button {
     margin: 20px auto 0; /* Centra el botón horizontalmente y añade margen superior */
     display: block; /* Hace que el botón se comporte como un bloque para aplicar el margin auto */
 }
-
 
 button:hover {
     background-color: #d43f1f;

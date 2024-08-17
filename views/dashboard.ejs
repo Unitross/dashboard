@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard</title>
     <link rel="stylesheet" href="/dash-bca/css/dashboard.css">
-    <link rel="stylesheet" href="/dash-bca/css/modalcontratounico.css">
+    <link rel="stylesheet" href="/dash-bca/css/modalessidebar.css">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.js"></script>
@@ -33,16 +33,19 @@
         
         </div>
     </header>
-    <nav>
-        <ul>
-            <li><a href="#">Inicio</a></li>
-            <li><a href="#">Pago Único</a></li>
-            <li><a href="#">Pago Mensual</a></li>
-            <li><a href="#" onclick="openNuevoClienteModal()">Registrar Cliente</a></li>
-            <li><a href="#">Ver Clientes</a></li>
-            <li><a href="#">Cuenta de Usuario</a></li>
-        </ul>
-    </nav>
+
+ <nav>
+   <ul>
+    <li><a href="#" data-target="inicio">Inicio</a></li>
+    <li><a href="#" data-target="pagoUnico">Pago Único</a></li>
+    <li><a href="#" data-target="pagoMensual">Pago Mensual</a></li>
+    <li><a href="#" id="openNuevoClienteModal" data-target="nuevoClienteModal">Registrar Cliente</a></li>
+    <li><a href="#" id="openVerClientesModal" data-target="verClientesModal">Ver Clientes</a></li>
+    <li><a href="#" data-target="cuentaUsuario">Cuenta de Usuario</a></li>
+</ul>
+
+</nav>
+   
     <main>
         <canvas id="myChart"></canvas>
     </main>
@@ -52,7 +55,7 @@
     </div>    
     
 
-<!-- Modal para cambiar la foto de perfil -->
+<!-- MODAL PARA CAMBIAR LA FOTO DE PERFIL -->
 <div id="changePhotoModal" class="modal" style="display: none;">
     <div class="modal-content">
         <span class="close-button" onclick="closeModal('changePhotoModal')">&times;</span>
@@ -64,8 +67,9 @@
         <button type="button" onclick="cropImage()">Usar Foto</button>
     </div>
 </div>
+<!------------------------------------------------------------->
 
-<!-- Modal para Cambiar Nombre -->
+<!-- MODAL PARA CAMBIAR NOMBRE -->
 <div id="changeNameModal" class="modal">
     <div class="modal-content">
         <span class="close" onclick="closeModal('changeNameModal')">&times;</span>
@@ -76,8 +80,9 @@
         </form>
     </div>
 </div>
+<!------------------------------------------------------------->
 
-<!-- Modal para Cambiar contraseña -->
+<!-- MODAL PARA CAMBIAR CONTRASEÑA -->
 <div id="changePasswordModal" class="modal">
     <div class="modal-content">
         <span class="close" onclick="closeModal('changePasswordModal')">&times;</span>
@@ -90,15 +95,14 @@
         </form>
     </div>
 </div>
-
+<!------------------------------------------------------------->
 
 <!-- MODAL DE PARA CREAR NUEVO CLIENTE -->
 <div id="mensajeExito" class="mensaje-exito" style="display: none;">
     Cliente agregado con éxito
 </div>
 <div id="nuevoClienteModal" class="Clientemodal" style="display: none;">
-    <div class="nuevoCliente-modal-content">
-        <span class="nuevoCliente-close-button" onclick="closeNuevoClienteModal()">&times;</span>
+    <div class="nuevoCliente-modal-content"> 
         <h2>Nuevo Cliente</h2>
         <form id="nuevoClienteForm">
             <div class="nuevoCliente-form-group-row">
@@ -110,18 +114,16 @@
                     <label for="apellido">Apellido</label>
                     <input type="text" id="apellido" name="apellido" class="nuevoCliente-form-control" required>
                 </div>
-            </div>
-            <div class="nuevoCliente-form-group-row">
-                <div class="nuevoCliente-form-group">
-                    <label for="nombreEmpresa">Nombre de la Empresa</label>
-                    <input type="text" id="nombreEmpresa" name="nombreEmpresa" class="nuevoCliente-form-control">
-                </div>
                 <div class="nuevoCliente-form-group">
                     <label for="dni">DNI</label>
                     <input type="text" id="dni" name="dni" class="nuevoCliente-form-control" required>
                 </div>
             </div>
             <div class="nuevoCliente-form-group-row">
+                <div class="nuevoCliente-form-group">
+                    <label for="nombreEmpresa">Nombre de la Empresa</label>
+                    <input type="text" id="nombreEmpresa" name="nombreEmpresa" class="nuevoCliente-form-control">
+                </div>
                 <div class="nuevoCliente-form-group">
                     <label for="email">Correo</label>
                     <input type="email" id="email" name="email" class="nuevoCliente-form-control" required>
@@ -140,18 +142,16 @@
                     <label for="ciudad">Ciudad</label>
                     <input type="text" id="ciudad" name="ciudad" class="nuevoCliente-form-control">
                 </div>
-            </div>
-            <div class="nuevoCliente-form-group-row">
-                <div class="nuevoCliente-form-group">
-                    <label for="pais">País</label>
-                    <input type="text" id="pais" name="pais" class="nuevoCliente-form-control">
-                </div>
                 <div class="nuevoCliente-form-group">
                     <label for="codigoPostal">Código Postal</label>
                     <input type="text" id="codigoPostal" name="codigoPostal" class="nuevoCliente-form-control">
                 </div>
             </div>
             <div class="nuevoCliente-form-group-row">
+                <div class="nuevoCliente-form-group">
+                    <label for="pais">País</label>
+                    <input type="text" id="pais" name="pais" class="nuevoCliente-form-control">
+                </div>
                 <div class="nuevoCliente-form-group">
                     <label for="website">Website</label>
                     <input type="text" id="website" name="website" class="nuevoCliente-form-control">
@@ -173,8 +173,6 @@
                     <label for="fechaContratacion">Fecha de Contratación</label>
                     <input type="date" id="fechaContratacion" name="fechaContratacion" class="nuevoCliente-form-control">
                 </div>
-            </div>
-            <div class="nuevoCliente-form-group-row">
                 <div class="nuevoCliente-form-group">
                     <label for="tags">Tags</label>
                     <input type="text" id="tags" name="tags" class="nuevoCliente-form-control">
@@ -188,6 +186,43 @@
         </form>
     </div>
 </div>
+<!------------------------------------------------------------->
+
+<!-- MODAL DE PARA VER A LOS CLIENTES -->
+
+<div id="verClientesModal" class="Clientemodal" style="display: none;">
+    <div class="nuevoCliente-modal-content">
+        <h2>Lista de Clientes</h2>
+        <table id="tablaClientes">
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Apellido</th>
+                    <th>DNI</th>
+                    <th>Nombre de la Empresa</th>
+                    <th>Email</th>
+                    <th>Teléfono</th>
+                    <th>Dirección</th>
+                    <th>Ciudad</th>
+                    <th>Código Postal</th>
+                    <th>País</th>
+                    <th>Website</th>
+                    <th>Servicios Contratados</th>
+                    <th>Fecha de Contratación</th>
+                    <th>Tipo de Contacto</th>
+                    <th>Tags</th>
+                    <th>Notas</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- botones de editar -->
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+
 
 
     <script src="/dash-bca/js/dashboard.js"></script>

@@ -9,7 +9,6 @@
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
 }
 
-
 /* Estilo para los campos del formulario */
 #registerForm input, #registerForm select {
     width: 100%; /* Asegura que los campos ocupen todo el ancho disponible */
@@ -33,7 +32,6 @@
     box-sizing: border-box;
     margin-top: 10px;
 }
-
 
 #registerForm button:hover {
     background-color: #d54c14;
