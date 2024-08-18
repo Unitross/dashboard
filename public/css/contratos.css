@@ -68,3 +68,15 @@
         flex: 0 0 100%;  /* Ocupa el 100% en pantallas pequeñas */
     }
 }
+
+/*---------------*/
+.contract-info {
+    border: 1px solid #E65616;
+    padding: 6px;
+    border-radius: 8px;
+    background-color: #f2f2f2;
+    width: 20%;
+    margin-bottom: 10px;
+    text-align: center;
+    margin-left: 40%;
+}

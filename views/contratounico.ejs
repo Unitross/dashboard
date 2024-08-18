@@ -9,6 +9,12 @@
 <body>
     <div class="containerunico">
         <h3>Formulario de Contrato</h3>
+        <div class="contract-info">
+            <p id="contractNumberDisplay"></p>
+            <p id="clientNumberDisplay"></p>
+        </div>
+        <br></br>
+        
         <form id="form">
             <div class="row">
                 <div class="col-md-6">
@@ -126,9 +132,35 @@
         </form>
     </div>
 
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js" defer></script>
     <script src="/dash-bca/js/contratounico.js"></script>
+    <script src="/dash-bca/js/jspdf.min.js"></script>
+<script>
+  document.querySelector('#form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const { jsPDF } = window.jspdf;
+      const pdf = new jsPDF('p', 'pt', 'letter');
+      const image1 = await loadImage("../public/images/contrato1.png");
+      const image2 = await loadImage("../public/images/acuerdo.jpg");
+     
+      pdf.addImage(image1, 'PNG', 9, 0, 595, 792);
+      pdf.text("Datos del cliente: " + document.getElementById('ncliente').value, 50, 100); 
+      // Agrega más textos y valores del formulario aquí
+
+      pdf.addPage();
+      pdf.addImage(image2, 'PNG', 9, 0, 595, 792);
+      pdf.save("contratounico.pdf");
+  });
+
+  function loadImage(url) {
+      return new Promise(resolve => {
+          const img = new Image();
+          img.onload = () => resolve(img);
+          img.src = url;
+      });
+  }
+</script>
+
     
 </body>
 </html>
