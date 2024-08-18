@@ -81,7 +81,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // Asegurarse de que el modal esté cerrado al cargar la página
 
-
 // Función para ABRIR el modal de Nuevo Cliente
 function openNuevoClienteModal() {
     const modal = document.getElementById('nuevoClienteModal');
@@ -98,14 +97,6 @@ function closeNuevoClienteModal() {
         document.getElementById('nuevoClienteForm').reset(); // Limpia el formulario
     }
 }
-
-// Cerrar el modal cuando se hace clic fuera de él
-window.addEventListener('click', function(event) {
-    const modal = document.getElementById('nuevoClienteModal');
-    if (event.target === modal) {
-        closeNuevoClienteModal();
-    }
-});
 
 // Función para manejar el envío del formulario de nuevo cliente
 document.getElementById('nuevoClienteForm').addEventListener('submit', function(e) {
@@ -149,6 +140,7 @@ document.querySelectorAll('button:not(.nuevoCliente-btn), a').forEach(element =>
     });
 });
 
+//-----------------------------------------
 //MODAL PARA VER A LOS CLIENTES
 
 // Asegúrate de que el documento esté completamente cargado antes de agregar el evento
@@ -187,49 +179,11 @@ function closeNuevoClienteModal() {
 // Función para ABRIR el modal de "Ver Clientes"
 function openVerClientesModal() {
     closeModals(); // Cerrar otros modales
-    fetch('/dash-bca/ver-clientes')
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Error en la respuesta del servidor');
-            }
-            return response.json();
-        })
-        .then(data => {
-            const tbody = document.querySelector('#tablaClientes tbody');
-            tbody.innerHTML = ''; // Limpia la tabla
-
-            if (data.length === 0) {
-                tbody.insertAdjacentHTML('beforeend', '<tr><td colspan="16">No hay clientes registrados</td></tr>');
-            } else {
-                data.forEach(cliente => {
-                    const row = `
-                        <tr>
-                            <td>${cliente.nombre}</td>
-                            <td>${cliente.apellido}</td>
-                            <td>${cliente.dni}</td>
-                            <td>${cliente.nombreEmpresa}</td>
-                            <td>${cliente.email}</td>
-                            <td>${cliente.telefono}</td>
-                            <td>${cliente.direccion}</td>
-                            <td>${cliente.ciudad}</td>
-                            <td>${cliente.codigoPostal}</td>
-                            <td>${cliente.pais}</td>
-                            <td>${cliente.website}</td>
-                            <td>${cliente.serviciosContratados}</td>
-                            <td>${cliente.fechaContratacion}</td>
-                            <td>${cliente.tipoContacto}</td>
-                            <td>${cliente.tags}</td>
-                            <td>${cliente.notas}</td>
-                        </tr>`;
-                    tbody.insertAdjacentHTML('beforeend', row);
-                });
-            }
-            const modal = document.getElementById('verClientesModal');
-            if (modal) {
-                modal.style.display = 'block';
-            }
-        })
-        .catch(error => console.error('Error al cargar los datos de los clientes:', error));
+    displayContactsPage(1); // Cargar la primera página
+    const modal = document.getElementById('verClientesModal');
+    if (modal) {
+        modal.style.display = 'block';
+    }
 }
 
 // Función para CERRAR el modal de "Ver Clientes"
@@ -240,17 +194,6 @@ function closeVerClientesModal() {
     }
 }
 
-// Cerrar modales si se hace clic fuera de ellos
-window.addEventListener('click', function(event) {
-    const modalNuevoCliente = document.getElementById('nuevoClienteModal');
-    const modalVerClientes = document.getElementById('verClientesModal');
-    
-    if (event.target === modalNuevoCliente) {
-        closeNuevoClienteModal();
-    } else if (event.target === modalVerClientes) {
-        closeVerClientesModal();
-    }
-});
 
 // Cerrar todos los modales
 function closeModals() {
@@ -265,4 +208,201 @@ document.querySelectorAll('button:not(.nuevoCliente-btn), a').forEach(element =>
     });
 });
 
-//----------------------
+//------------------------------------------
+// Habilitar la edición de una fila
+function enableEdit(button) {
+    const row = button.closest('tr');
+    row.querySelectorAll('td[contenteditable="false"]').forEach(td => {
+        td.setAttribute('contenteditable', 'true');
+    });
+    button.style.display = 'none';
+    row.querySelector('.save-btn').style.display = 'inline-block';
+    row.querySelector('.cancel-btn').style.display = 'inline-block';
+}
+
+// Guardar los cambios realizados en una fila
+function saveEdit(button) {
+    const row = button.closest('tr');
+    const clienteId = row.getAttribute('data-id'); // Obtener el ID del cliente
+    const updatedData = {};
+
+    // Recorrer cada celda editable y obtener los datos
+    row.querySelectorAll('td[contenteditable="true"]').forEach(td => {
+        td.setAttribute('contenteditable', 'false');
+        const fieldName = td.getAttribute('data-field'); // Obtener el campo de la base de datos
+        
+        if (fieldName) {
+            updatedData[fieldName] = td.textContent.trim(); // Agregar el valor actualizado
+        } else {
+            console.error('data-field attribute missing in td:', td);
+        }
+    });
+    
+    if (!clienteId) {
+        console.error('Cliente ID is missing in the row:', row);
+        return;
+    }
+
+    // Enviar los datos actualizados al servidor
+    fetch('/dash-bca/actualizar-cliente', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ id: clienteId, ...updatedData }), // Enviar ID y datos actualizados
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Error en la actualización del cliente');
+        }
+        return response.json();
+    })
+    .then(data => {
+        if (data.error) {
+            console.error('Error al actualizar el cliente:', data.error);
+        } else {
+            console.log('Cliente actualizado:', data.cliente);
+        }
+    })
+    .catch(error => console.error('Error al enviar los datos:', error));
+
+    button.style.display = 'none';
+    row.querySelector('.edit-btn').style.display = 'inline-block';
+    row.querySelector('.cancel-btn').style.display = 'none';
+}
+
+//----------------------------------------
+// Cancelar la edición y restaurar valores originales
+function cancelEdit(button) {
+    const row = button.closest('tr');
+    row.querySelectorAll('td[contenteditable="true"]').forEach(td => {
+        td.setAttribute('contenteditable', 'false');
+    });
+    button.style.display = 'none';
+    row.querySelector('.edit-btn').style.display = 'inline-block';
+    row.querySelector('.save-btn').style.display = 'none';
+}
+
+//-----------------------------------------
+// Hacer que la tabla sea desplazable con el mouse
+const tablaClientes = document.getElementById('tablaClientes');
+let isDown = false;
+let startX;
+let scrollLeft;
+
+tablaClientes.addEventListener('mousedown', (e) => {
+    isDown = true;
+    tablaClientes.classList.add('active');
+    startX = e.pageX - tablaClientes.offsetLeft;
+    scrollLeft = tablaClientes.scrollLeft;
+});
+
+tablaClientes.addEventListener('mouseleave', () => {
+    isDown = false;
+    tablaClientes.classList.remove('active');
+});
+
+tablaClientes.addEventListener('mouseup', () => {
+    isDown = false;
+    tablaClientes.classList.remove('active');
+});
+
+tablaClientes.addEventListener('mousemove', (e) => {
+    if (!isDown) return;
+    e.preventDefault();
+    const x = e.pageX - tablaClientes.offsetLeft;
+    const walk = (x - startX) * 3; // Velocidad de desplazamiento
+    tablaClientes.scrollLeft = scrollLeft - walk;
+});
+
+//----------------------------------------------
+let currentPage = 1;
+const rowsPerPage = 20;
+
+function displayContactsPage(page, searchTerm = '') {
+    fetch(`/dash-bca/ver-clientes?page=${page}&limit=${rowsPerPage}&search=${searchTerm}`)
+        .then(response => response.json())
+        .then(data => {
+            const tbody = document.querySelector('#tablaClientes tbody');
+            tbody.innerHTML = ''; // Limpia la tabla
+
+            console.log('Datos recibidos para la página', page, ':', data.clientes);
+            console.log('Total de registros:', data.total);
+
+            if (data.clientes.length === 0) {
+                tbody.insertAdjacentHTML('beforeend', '<tr><td colspan="16">No hay clientes registrados</td></tr>');
+            } else {
+                data.clientes.forEach(cliente => {
+                    const row = `
+                        <tr data-id="${cliente.id}">
+                            <td contenteditable="false" data-field="nombre">${cliente.nombre}</td>
+                            <td contenteditable="false" data-field="apellido">${cliente.apellido}</td>
+                            <td contenteditable="false" data-field="dni">${cliente.dni}</td>
+                            <td contenteditable="false" data-field="nombreEmpresa">${cliente.nombreEmpresa}</td>
+                            <td contenteditable="false" data-field="email">${cliente.email}</td>
+                            <td contenteditable="false" data-field="telefono">${cliente.telefono}</td>
+                            <td contenteditable="false" data-field="direccion">${cliente.direccion}</td>
+                            <td contenteditable="false" data-field="ciudad">${cliente.ciudad}</td>
+                            <td contenteditable="false" data-field="codigoPostal">${cliente.codigoPostal}</td>
+                            <td contenteditable="false" data-field="pais">${cliente.pais}</td>
+                            <td contenteditable="false" data-field="website">${cliente.website}</td>
+                            <td contenteditable="false" data-field="serviciosContratados">${cliente.serviciosContratados}</td>
+                            <td contenteditable="false" data-field="fechaContratacion">${cliente.fechaContratacion}</td>
+                            <td contenteditable="false" data-field="tipoContacto">${cliente.tipoContacto}</td>
+                            <td contenteditable="false" data-field="tags">${cliente.tags}</td>
+                            <td contenteditable="false" data-field="notas">${cliente.notas}</td>
+                            <td>
+                                <button class="edit-btn" onclick="enableEdit(this)">Editar</button>
+                                <button class="save-btn" onclick="saveEdit(this)" style="display:none;">Guardar</button>
+                                <button class="cancel-btn" onclick="cancelEdit(this)" style="display:none;">Cancelar</button>
+                            </td>
+                        </tr>`;
+                    tbody.insertAdjacentHTML('beforeend', row);
+                });
+
+                const totalPages = Math.ceil(data.total / rowsPerPage);
+                document.getElementById('prevPage').disabled = (page === 1);
+                document.getElementById('nextPage').disabled = (page >= totalPages);
+                console.log('Botones: Anterior –', page === 1, ', Siguiente –', page >= totalPages);
+            }
+        })
+        .catch(error => console.error('Error al cargar los datos de los clientes:', error));
+}
+
+//----------
+function refreshModal(page) {
+    document.getElementById('verClientesModal').style.display = 'none';
+    displayContactsPage(page);
+    document.getElementById('verClientesModal').style.display = 'block';
+}
+
+// Inicialización de la paginación y carga de la primera página
+document.addEventListener('DOMContentLoaded', function() {
+    document.getElementById('openVerClientesModal').addEventListener('click', function(e) {
+        e.preventDefault();
+        currentPage = 1; // Resetea la página actual a 1
+        displayContactsPage(currentPage); // Cargar la primera página
+        document.getElementById('verClientesModal').style.display = 'block';
+    });
+
+    // Botones de paginación
+    document.getElementById('prevPage').addEventListener('click', function() {
+        if (currentPage > 1) {
+            currentPage--;
+            refreshModal(currentPage);
+        }
+    });
+
+    document.getElementById('nextPage').addEventListener('click', function() {
+        currentPage++;
+        refreshModal(currentPage);
+    });
+});
+
+//-------------------------------
+//Filtro
+document.getElementById('filtroCliente').addEventListener('input', function() {
+    const searchTerm = this.value.trim().toLowerCase();
+    currentPage = 1; // Reinicia a la primera página
+    displayContactsPage(currentPage, searchTerm);
+})

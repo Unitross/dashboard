@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const db = require('../config/db');
 
+
 // Ruta para manejar el envío del formulario y guardar los datos en la base de datos
 
 router.post('/guardar-contrato', (req, res) => {
@@ -35,57 +36,4 @@ router.get('/contrato-unico', (req, res) => {
 });
 
 module.exports = router;
-
-// REGISTRO DE CLIENTES EN LA BD
-// Ruta para guardar los datos del nuevo cliente
-
-router.post('/guardar-cliente', (req, res) => {
-    const {
-        nombre, apellido, nombreEmpresa, dni, email, telefono, tipoContacto,
-        direccion, ciudad, pais, codigoPostal, website, serviciosContratados,
-        fechaContratacion, tags, notas
-    } = req.body;
-
-    // Inserta en la base de datos
-    
-    db.query('INSERT INTO clientes SET ?', {
-        nombre, apellido, nombreEmpresa, dni, email, telefono, tipoContacto,
-        direccion, ciudad, pais, codigoPostal, website, serviciosContratados,
-        fechaContratacion, tags, notas
-    }, (err, results) => {
-        if (err) {
-            console.error('Error al guardar los datos:', err);
-            return res.status(500).json({ message: 'Error en el servidor al guardar los datos.' });
-        }
-        res.status(201).json({ message: 'Cliente guardado con éxito.' });
-    });
-});
-
-module.exports = router;
-
-router.get('/ver-clientes', (req, res) => {
-    db.query('SELECT * FROM clientes', (err, results) => {
-        if (err) {
-            console.error('Error al obtener los clientes:', err);
-            return res.status(500).json({ message: 'Error en el servidor al obtener los clientes.' });
-        }
-        res.json(results);
-    });
-});
-
-
-
-// REGISTRO DE CLIENTES EN LA BD
-// Ruta para pedir a los clientes a la base
-
-router.get('/ver-clientes', (req, res) => {
-    db.query('SELECT * FROM clientes', (err, results) => {
-        if (err) {
-            console.error('Error al recuperar los clientes:', err);
-            return res.status(500).json({ message: 'Error en el servidor' });
-        }
-        res.json(results);
-    });
-});
-
 

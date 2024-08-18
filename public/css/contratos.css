@@ -1,0 +1,70 @@
+/* Contenedor del formulario */
+.containerunico {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 10px;
+  
+}
+
+/* Título del formulario */
+.containerunico h3 {
+    text-align: center;
+    font-size: 24px;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+/* Estilos para las filas y columnas */
+.row {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.col-md-6 {
+    flex: 0 0 50%;  /* Cada columna ocupa el 50% del ancho */
+    padding: 10px;
+    box-sizing: border-box;
+   
+}
+
+.col-md-12 {
+    flex: 0 0 100%;  /* Las columnas que deben ocupar el ancho completo */
+    padding: 10px;
+    box-sizing: border-box;
+}
+
+/* Estilo para los inputs y textareas */
+.form-control {
+    width: 97%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+/* Estilo para el botón */
+.btn {
+    background-color: #E65616;
+    color: white;
+    padding: 14px 20px;
+    margin: 8px 0;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    width: 30%;
+    margin-left: 35%;
+}
+
+.btn:hover {
+    background-color: #d43f1f;
+}
+
+/* Media queries para responsividad */
+@media (max-width: 768px) {
+    .col-md-6, .col-md-12 {
+        flex: 0 0 100%;  /* Ocupa el 100% en pantallas pequeñas */
+    }
+}

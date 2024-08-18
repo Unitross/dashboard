@@ -34,6 +34,8 @@ const authRoutes = require('./routes/auth');
 const dashboardRoutes = require('./routes/dashboard');
 const imageRoutes = require('./routes/images');
 const contratounicoRouter = require('./routes/contratounico');
+const ingresoclientesRouter = require('./routes/ingresoclientes');
+
 
 
 
@@ -42,6 +44,8 @@ app.use('/dash-bca', authRoutes);
 app.use('/dash-bca', dashboardRoutes);
 app.use('/dash-bca', imageRoutes);
 app.use('/dash-bca', contratounicoRouter);
+app.use('/dash-bca', ingresoclientesRouter);
+
 
 
 
@@ -55,3 +59,4 @@ const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
     console.log(`Servidor corriendo en http://localhost:${PORT}`);
 });
+
