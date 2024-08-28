@@ -7,9 +7,10 @@ const db = require('../config/db');
 const router = express.Router();
 
 //----------------
+// Ruta para renderizar el formulario de contrato único
 router.get('/contrato-unico', (req, res) => {
     console.log("Cargando la vista del formulario único...");
-    res.render('contratounico'); 
+    res.render('contratounico');
 });
 
 //----------------
@@ -37,8 +38,8 @@ router.get('/get-current-numbers', (req, res) => {
     });
 });
 
+//----------------
 // Ruta para generar y guardar el PDF
-
 router.post('/generate-pdf', (req, res) => {
     try {
         const {
@@ -50,15 +51,30 @@ router.post('/generate-pdf', (req, res) => {
 
         const pdf = new jsPDF('p', 'pt', 'letter');
 
-        // Cargar la imagen desde la carpeta de imágenes
+        // Cargar las imágenes desde la carpeta de imágenes
         const contratoImagePath = path.join(__dirname, '../public/images/contrato1.png');
-        const acuerdoImagePath = path.join(__dirname, '../public/images/acuerdo.jpg');
+        const acuerdoImagePath1 = path.join(__dirname, '../public/images/contratounico1.jpg');
+        const acuerdoImagePath2 = path.join(__dirname, '../public/images/contratounico2.jpg');
+        const acuerdoImagePath3 = path.join(__dirname, '../public/images/contratounico3.jpg');
 
         console.log("Cargando imágenes para el PDF...");
         const contratoImage = fs.readFileSync(contratoImagePath).toString('base64');
-        const acuerdoImage = fs.readFileSync(acuerdoImagePath).toString('base64');
+        const acuerdoImage1 = fs.readFileSync(acuerdoImagePath1).toString('base64');
+        const acuerdoImage2 = fs.readFileSync(acuerdoImagePath2).toString('base64');
+        const acuerdoImage3 = fs.readFileSync(acuerdoImagePath3).toString('base64');
 
         pdf.addImage(contratoImage, 'PNG', 9, 0, 595, 792);
+
+        pdf.addPage();
+        pdf.addImage(acuerdoImage1, 'JPEG', 9, 0, 595, 792);
+        
+        pdf.addPage();
+        pdf.addImage(acuerdoImage2, 'JPEG', 9, 0, 595, 792);
+        
+        pdf.addPage();
+        pdf.addImage(acuerdoImage3, 'JPEG', 9, 0, 595, 792);
+
+        
 
         // Posicionar los campos en el PDF
         pdf.setFontSize(8);
@@ -103,25 +119,32 @@ router.post('/generate-pdf', (req, res) => {
         pdf.text(ncontrato, 60, 774);
         pdf.text(nombrea, 501, 774);
 
-        pdf.addPage();
-
-        pdf.addImage(acuerdoImage, 'PNG', 9, 0, 595, 792);
-        pdf.text(ncontrato, 60, 774);
-        pdf.text(nombrea, 501, 774);
-
-        // Guardar el PDF en el servidor
-         const pdfFileName = `contratounico_${nombrea}_${ncontrato}.pdf`; // Ahora incluye el nombre del cliente
-         const pdfFilePath = path.join(__dirname, '../public/pdfs', pdfFileName);
-         pdf.save(pdfFilePath);
-
-        // Enviar el PDF al cliente para descarga
-        res.download(pdfFilePath, pdfFileName, (err) => {
+        // Guardar los datos en la base de datos
+        db.query('INSERT INTO contratos_unicos SET ?', {
+            ncontrato, ncliente, nombreco, rsocial, dni, telefono, telefonofijo,
+            nombrea, email, direccion, municipio, provincia, cp, pais, pcontacto,
+            telecontacto, plan, formadepago, referencia, totalproyecto, anticipo,
+            subtotal, descuentocomercial, iva, importetotal, dni2, responsable
+        }, (err, result) => {
             if (err) {
-                console.error("Error al enviar el PDF:", err);
-                res.status(500).json({ message: "Error al enviar el PDF." });
-            } else {
-                console.log("PDF enviado con éxito:", pdfFileName);
+                console.error('Error al guardar los datos en la base de datos:', err);
+                return res.status(500).json({ success: false, message: 'Error al guardar los datos.' });
             }
+
+            // Guardar el PDF en el servidor
+            const pdfFileName = `contratounico_${nombrea}_${ncontrato}.pdf`;
+            const pdfFilePath = path.join(__dirname, '../public/pdfs', pdfFileName);
+            fs.writeFileSync(pdfFilePath, pdf.output());
+
+            // Enviar el PDF al cliente para descarga
+            res.download(pdfFilePath, pdfFileName, (err) => {
+                if (err) {
+                    console.error("Error al enviar el PDF:", err);
+                    res.status(500).json({ message: "Error al enviar el PDF." });
+                } else {
+                    console.log("PDF enviado con éxito:", pdfFileName);
+                }
+            });
         });
 
     } catch (error) {

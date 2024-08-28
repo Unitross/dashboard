@@ -1,16 +1,18 @@
 document.addEventListener('DOMContentLoaded', function () {
-    document.querySelector('a[data-target="pagoUnico"]').addEventListener('click', function (event) {
-        event.preventDefault();
-        fetch('/dash-bca/contrato-unico')
-            .then(response => response.text())
-            .then(html => {
-                console.log(html);  // Esto te permitirá ver en la consola lo que se está cargando
-                document.getElementById('content').innerHTML = html;
-                attachFormEventListener();
-            })
-            
-            .catch(error => console.error('Error al cargar el formulario de contrato único:', error));
-    });
+    const pagoUnicoLink = document.querySelector('a[data-target="pagoUnico"]');
+    if (pagoUnicoLink) {
+        pagoUnicoLink.addEventListener('click', function (event) {
+            event.preventDefault();
+            fetch('/dash-bca/contrato-unico')
+                .then(response => response.text())
+                .then(html => {
+                    document.getElementById('content').innerHTML = html;
+                    attachFormEventListener();
+                    updateCurrentNumbers();
+                })
+                .catch(error => console.error('Error al cargar el formulario de contrato único:', error));
+        });
+    }
 });
 
 function attachFormEventListener() {
@@ -32,46 +34,7 @@ function attachFormEventListener() {
                 },
                 body: JSON.stringify(jsonData)
             })
-            .then(response => response.blob())
-            .then(blob => {
-                const url = window.URL.createObjectURL(blob);
-                const a = document.createElement('a');
-                a.href = url;
-                a.download = 'contratounico.pdf';
-                document.body.appendChild(a);
-                a.click();
-                a.remove();
-            })
-            .catch(error => console.error('Error al enviar el formulario:', error));
-        });
-    } else {
-        console.error("Formulario no encontrado");
-    }
-}
-
-//------------------------
-//NO RECARGAR LA PAGINA
-function attachFormEventListener() {
-    const form = document.querySelector('#form');
-    if (form) {
-        form.addEventListener('submit', function(e) {
-            e.preventDefault();
-
-            const formData = new FormData(form);
-            const jsonData = {};
-            formData.forEach((value, key) => {
-                jsonData[key] = value;
-            });
-
-            fetch('/dash-bca/generate-pdf', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(jsonData)
-            })
             .then(response => {
-                // Verificamos si la respuesta es un PDF
                 if (response.ok) {
                     return response.blob();
                 } else {
@@ -79,11 +42,10 @@ function attachFormEventListener() {
                 }
             })
             .then(blob => {
-                // Si la respuesta fue un PDF, lo descargamos
                 const pdfURL = window.URL.createObjectURL(blob);
                 const link = document.createElement('a');
                 link.href = pdfURL;
-                link.download = 'contratounico.pdf';
+                link.download = `contratounico_${jsonData.nombrea}_${jsonData.ncontrato}.pdf`;
                 link.click();
             })
             .catch(error => console.error('Error al enviar el formulario:', error));
